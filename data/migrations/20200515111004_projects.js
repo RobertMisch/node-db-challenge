@@ -24,9 +24,9 @@ exports.up = function (knex) {
         })
         .createTable("resources", resources => {
             resources.increments();
-
             resources.string("name", 255).notNullable();
             resources.string("description", 255)
+            resources.unique("name");
         })
         .createTable("project_resources", projectResources => {
             projectResources.increments();

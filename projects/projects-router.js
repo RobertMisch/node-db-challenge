@@ -31,7 +31,7 @@ router.get('/:id/tasks', (req, res) => {
             res.status(200).json(tasks);
         })
         .catch(err => {
-            res.status(500).json({ message: 'Failed to get tasks' });
+            res.status(500).json({ message: 'Failed to get task' });
         });
 })
 
@@ -43,7 +43,7 @@ router.post('/', (req, res) => {
             res.status(201).json(projects);
         })
         .catch(err => {
-            res.status(500).json({ message: 'Failed to create new projects' });
+            res.status(500).json({ message: 'Failed to create new project' });
         });
 });
 
@@ -58,11 +58,11 @@ router.post('/:id/tasks', (req, res) => {
                     res.status(201).json(tasks);
                 })
                 .catch(err => {
-                    res.status(500).json({ message: 'Failed to create new tasks' });
+                    res.status(500).json({ message: 'Failed to create new task' });
                 });
         })
         .catch(err => {
-            res.status(500).json({ message: 'Failed to get projects' });
+            res.status(500).json({ message: 'Failed to get project' });
         });
 });
 
