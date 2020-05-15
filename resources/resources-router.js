@@ -15,6 +15,16 @@ router.get('/', (req, res) => {
         });
 });
 
+router.get('/:id', (req, res) => {
+  Resources.findByProjectId(req.params.id)
+      .then(resources => {
+          res.json(resources);
+      })
+      .catch(err => {
+          res.status(500).json({ message: 'Failed to get resources' });
+      });
+});
+
 router.post('/', (req, res) => {
     const resourcesData = req.body;
   

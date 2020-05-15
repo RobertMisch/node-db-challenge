@@ -1,6 +1,7 @@
 const express = require('express');
 
 const Projects = require('./projects-model.js');
+const Resources = require('../resources/resources-model');
 
 const router = express.Router();
 
@@ -16,9 +17,27 @@ router.get('/', (req, res) => {
 });
 
 router.get('/:id', (req, res) => {
-    Projects.findById(req.params.id)
+    const{id}=req.params
+    Projects.findById(id)
         .then(projects => {
-            res.status(200).json(projects);
+            const finalReturn = { ...projects, tasks: [], resources: [] }
+            console.log(finalReturn)
+            Projects.findTasksInfo(id)
+                .then(tasks => {
+                    finalReturn.tasks = tasks.map(item => { return item })
+                    // res.status(200).json(finalReturn);
+                    Resources.findById(id)
+                        .then(resources => {
+                            finalReturn.resources=resources.map(item=>{return item})
+                            res.status(200).json(finalReturn);
+                        })
+                        .catch(err => {
+                            res.status(500).json({ message: 'Failed to get resources' });
+                        });
+                })
+                .catch(err => {
+                    res.status(500).json({err, message: 'Failed to get task' });
+                });
         })
         .catch(err => {
             res.status(500).json({ message: 'Failed to get projects' });
