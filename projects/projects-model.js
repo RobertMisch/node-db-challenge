@@ -6,6 +6,7 @@ module.exports = {
     add,
     findTasks,
     findTasksInfo,
+    findByResources,
     addTask
 }
 //GET
@@ -26,6 +27,13 @@ function findTasks(id){
 function findTasksInfo(id){
     return db("tasks as t")
         .where({'t.project_id':id})
+}
+function findByResources(id) {
+    return db("resources as r")
+    .join('project_resources as c','c.resource_id','r.id')
+    .join('projects as p','p.id','c.project_id')
+    .select('r.id', 'r.name','r.description')
+    .where({'c.project_id':id})
 }
 function add(project) {
     return db("projects")

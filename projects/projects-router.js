@@ -17,27 +17,33 @@ router.get('/', (req, res) => {
 });
 
 router.get('/:id', (req, res) => {
-    const{id}=req.params
+    const { id } = req.params
+    let completion = 0
     Projects.findById(id)
         .then(projects => {
             const finalReturn = { ...projects, tasks: [], resources: [] }
-            console.log(finalReturn)
+            // console.log(finalReturn)
             Projects.findTasksInfo(id)
                 .then(tasks => {
                     finalReturn.tasks = tasks.map(item => { return item })
+                    // completion++
                     // res.status(200).json(finalReturn);
-                    Resources.findById(id)
+                    Projects.findByResources(id)
                         .then(resources => {
-                            finalReturn.resources=resources.map(item=>{return item})
+                            finalReturn.resources = resources.map(item => { return item })
+                            // completion++
                             res.status(200).json(finalReturn);
                         })
                         .catch(err => {
-                            res.status(500).json({ message: 'Failed to get resources' });
+                            res.status(500).json({ err, message: 'Failed to get resources' });
                         });
                 })
                 .catch(err => {
-                    res.status(500).json({err, message: 'Failed to get task' });
+                    res.status(500).json({ err, message: 'Failed to get task' });
                 });
+            // if(completion=2){
+            //     res.status(200).json(finalReturn);
+            // }
         })
         .catch(err => {
             res.status(500).json({ message: 'Failed to get projects' });

@@ -11,8 +11,8 @@ function find() {
 }
 function findByProjectId(id) {
     return db("resources")
+    .join()
     .where({project_id:id})
-
 }
 function add(resource) {
     return db("resources")
